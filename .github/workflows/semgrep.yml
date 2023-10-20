@@ -1,0 +1,51 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow file requires a free account on Semgrep.dev to
+# manage rules, file ignores, notifications, and more.
+#
+# See https://semgrep.dev/docs
+
+name: Patch Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  semgrep:
+    permissions:
+      contents: read
+    name: Scan
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    if: (github.actor != 'dependabot[bot]')
+    steps:
+      # Checkout project source
+      - uses: actions/checkout@v4
+        with:
+          repository: hashicorp/raft
+          ref: "${{ github.event.inputs.release }}"
+          path: upstream
+      - uses: actions/checkout@v4
+        with:
+          path: patcher
+      - run: semgrep scan -c ../patcher/semgrep_rules --autofix
+        working-directory: ./upstream
+      - run: semgrep scan -c ../patcher/semgrep_rules --autofix
+        working-directory: ./upstream
+      - name: Upload patched code
+        uses: actions/upload-artifact@v3
+        with:
+          name: upstream-patched-"${{ github.event.inputs.release }}"
+          path: |
+            ./upstream/
+            !./upstream/.git
