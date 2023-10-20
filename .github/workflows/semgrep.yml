@@ -23,7 +23,7 @@ jobs:
   semgrep:
     permissions:
       contents: read
-    name: Scan
+    name: Semgrep Patches
     runs-on: ubuntu-latest
     container:
       image: returntocorp/semgrep
