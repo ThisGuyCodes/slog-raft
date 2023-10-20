@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+set -x
 
 rm -rf testing.go *_test.go fuzzy
 
