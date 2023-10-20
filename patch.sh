@@ -4,6 +4,8 @@ set -x
 
 rm -rf testing.go *_test.go fuzzy
 
+cp ../patcher/new_files/* .
+
 go install golang.org/x/tools/cmd/goimports@latest
 goimports -w -local 'github.com/hashicorp'
 
