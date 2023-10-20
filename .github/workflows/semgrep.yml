@@ -52,13 +52,13 @@ jobs:
         path: ./patched
     - uses: actions/checkout@v4
       with:
-        path: patcher
+        path: ./patcher
     - name: Setup Go environment
       uses: actions/setup-go@v4
       with:
         go-version: '1.21'
         check-latest: true
-        cache-dependency-path: patched/go.sum
+        cache-dependency-path: ./patched/go.sum
     - name: Run in-repo script to finish patching
       run: ./patcher/patch.sh
       working-directory: ./patched
