@@ -45,7 +45,7 @@ jobs:
       - name: Upload patched code
         uses: actions/upload-artifact@v3
         with:
-          name: upstream-patched-"${{ github.event.inputs.release }}"
+          name: "upstream-patched-${{ github.event.inputs.release }}"
           path: |
             ./upstream/
             !./upstream/.git
